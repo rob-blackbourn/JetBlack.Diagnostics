@@ -39,6 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElapsedTime.cs" />
+    <Compile Include="ICompositeCounter.cs" />
+    <Compile Include="ICounter.cs" />
+    <Compile Include="IntAverageTimer.cs" />
+    <Compile Include="IntNumberOfItems.cs" />
+    <Compile Include="IPerformanceCounter.cs" />
+    <Compile Include="IPerformanceCounterFactory.cs" />
+    <Compile Include="LongNumberOfItems.cs" />
+    <Compile Include="MockPerformanceCounter.cs" />
+    <Compile Include="MockPerformanceCounterFactory.cs" />
+    <Compile Include="PerformanceCounterFactory.cs" />
+    <Compile Include="PerformanceCounterImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
