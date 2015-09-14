@@ -1,9 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetBlack.Diagnostics", "JetBlack.Diagnostics\JetBlack.Diagnostics.csproj", "{4C71CB5C-446B-4482-8018-846866B9D4F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetBlack.Diagnostics.Test", "JetBlack.Diagnostics.Test\JetBlack.Diagnostics.Test.csproj", "{EE55A5F6-54AF-45AD-BAFA-52D6A176BE69}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C3AB7C02-93FD-4735-A16C-EBD7304516B6}"
+	ProjectSection(SolutionItems) = preProject
+		License.txt = License.txt
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,10 @@ Global
 		{4C71CB5C-446B-4482-8018-846866B9D4F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C71CB5C-446B-4482-8018-846866B9D4F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C71CB5C-446B-4482-8018-846866B9D4F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE55A5F6-54AF-45AD-BAFA-52D6A176BE69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE55A5F6-54AF-45AD-BAFA-52D6A176BE69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE55A5F6-54AF-45AD-BAFA-52D6A176BE69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE55A5F6-54AF-45AD-BAFA-52D6A176BE69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

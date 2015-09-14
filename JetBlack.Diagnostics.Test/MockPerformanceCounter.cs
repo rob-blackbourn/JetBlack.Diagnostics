@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace JetBlack.Diagnostics
+namespace JetBlack.Diagnostics.Test
 {
     public class MockPerformanceCounter : IPerformanceCounter
     {

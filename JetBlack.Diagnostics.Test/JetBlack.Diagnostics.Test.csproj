@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4C71CB5C-446B-4482-8018-846866B9D4F2}</ProjectGuid>
+    <ProjectGuid>{EE55A5F6-54AF-45AD-BAFA-52D6A176BE69}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>JetBlack.Diagnostics</RootNamespace>
-    <AssemblyName>JetBlack.Diagnostics</AssemblyName>
+    <RootNamespace>JetBlack.Diagnostics.Test</RootNamespace>
+    <AssemblyName>JetBlack.Diagnostics.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,17 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElapsedTime.cs" />
-    <Compile Include="ICompositeCounter.cs" />
-    <Compile Include="ICounter.cs" />
-    <Compile Include="IntAverageTimer.cs" />
-    <Compile Include="IntNumberOfItems.cs" />
-    <Compile Include="IPerformanceCounter.cs" />
-    <Compile Include="IPerformanceCounterFactory.cs" />
-    <Compile Include="LongNumberOfItems.cs" />
-    <Compile Include="PerformanceCounterFactory.cs" />
-    <Compile Include="PerformanceCounterImpl.cs" />
+    <Compile Include="MockPerformanceCounter.cs" />
+    <Compile Include="MockPerformanceCounterFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JetBlack.Diagnostics\JetBlack.Diagnostics.csproj">
+      <Project>{4c71cb5c-446b-4482-8018-846866b9d4f2}</Project>
+      <Name>JetBlack.Diagnostics</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

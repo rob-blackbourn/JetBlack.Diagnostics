@@ -13,4 +13,3 @@
         IPerformanceCounter CounterBase { get; }
     }
 }
-}
