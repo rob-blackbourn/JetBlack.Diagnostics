@@ -13,8 +13,10 @@ A framework for performance counters addresses three issues: ease of development
 When writing code which contains performance counters, development is hampered by having to register performance
 counters before debugging the code. The same problem arises in testing.
 This issue is addressed by creating an interface [`IPerformanceCounter`](https://github.com/rob-blackbourn/JetBlack.Diagnostics/blob/master/JetBlack.Diagnostics/IPerformanceCounter.cs),
-a factory [`IPerformanceCounterFactory`](https://github.com/rob-blackbourn/JetBlack.Diagnostics/blob/master/JetBlack.Diagnostics/IPerformanceCounterFactory.cs).
-This means that in development and test we can mock the counters before installing them in production code.
+a factory [`IPerformanceCounterFactory`](https://github.com/rob-blackbourn/JetBlack.Diagnostics/blob/master/JetBlack.Diagnostics/IPerformanceCounterFactory.cs),
+and a [concrete implementation](https://github.com/rob-blackbourn/JetBlack.Diagnostics/blob/master/JetBlack.Diagnostics/PerformanceCounterImpl.cs)
+of the actual performance counter. This means that in development and test we can mock the counters before
+installing them in production.
 
 ### Usability
 
@@ -71,7 +73,9 @@ public class CacheMonitor
 }
 ```
 
-Note that a counter factory is used to generate the counter to provide mock support.
+Note that a counter factory is used to generate the counter to provide mock support. We have bundled
+the counters required, one of which is actually a composite counter (so in reality three counters are
+required). The `CreateCounterData` method consolidates the data required to install the counters.
 
 The cache might be implemented as follows.
 
@@ -114,7 +118,7 @@ public delegate bool TryGetValue<TKey, TValue>(TKey key, out TValue value);
     }
 ```
 
-And an installer.
+And an installer for a mythical user cache could be implemented in the following manner.
 
 ```cs
 public class CacheInstaller : Installer
