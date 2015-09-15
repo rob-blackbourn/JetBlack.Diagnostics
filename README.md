@@ -26,8 +26,8 @@ performed when the counter is sampled. The system also understands how to combin
 operation. They need to be registered before use; and in the case of composite counters we must ensure the counter and base
 are registered consequtively and in order.
 
-An example of this is the integer average timeer. It consists of a numerator of [type](https://msdn.microsoft.com/en-us/library/system.diagnostics.performancecountertype.aspx)
-`AverageCouter32` and a denominator of `AverageBase`. The average time is achieved by incrementing tyhe numerator
+An example of this is the integer average timer. It consists of a numerator of [type](https://msdn.microsoft.com/en-us/library/system.diagnostics.performancecountertype.aspx)
+`AverageCouter32` and a denominator of `AverageBase`. The average time is achieved by incrementing the numerator
 by the elapsed ticks, and the denominator by one. When registered we must ensure that the numerator is created before
 the denominator which must immediately succeed it.
 
