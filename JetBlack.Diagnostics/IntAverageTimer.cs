@@ -18,14 +18,14 @@ namespace JetBlack.Diagnostics
         public const PerformanceCounterType CounterType = PerformanceCounterType.AverageTimer32;
 
         /// <summary>
-        /// The base counter type.
-        /// </summary>
-        public const PerformanceCounterType BaseCounterType = PerformanceCounterType.AverageBase;
-
-        /// <summary>
         /// The actual performance counter.
         /// </summary>
         public IPerformanceCounter Counter { get; private set; }
+
+        /// <summary>
+        /// The base counter type.
+        /// </summary>
+        public const PerformanceCounterType BaseCounterType = PerformanceCounterType.AverageBase;
 
         /// <summary>
         /// The base performance counter.
@@ -144,8 +144,8 @@ namespace JetBlack.Diagnostics
         {
             return new[]
             {
-                new CounterCreationData(counterName, averageFetchHelp, PerformanceCounterType.AverageTimer32),
-                new CounterCreationData(counterName + BaseSuffix, averageFetchBaseHelp, PerformanceCounterType.AverageBase)
+                new CounterCreationData(counterName, averageFetchHelp, CounterType),
+                new CounterCreationData(counterName + BaseSuffix, averageFetchBaseHelp, BaseCounterType)
             };
         }
 

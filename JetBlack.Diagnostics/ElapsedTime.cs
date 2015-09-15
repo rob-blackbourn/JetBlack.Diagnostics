@@ -114,7 +114,7 @@ namespace JetBlack.Diagnostics
         {
             return new[]
             {
-                new CounterCreationData(counterName, counterHelp, PerformanceCounterType.ElapsedTime)
+                new CounterCreationData(counterName, counterHelp, CounterType)
             };
         }
 
