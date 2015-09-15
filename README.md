@@ -2,40 +2,41 @@
 
 ## Introduction
 
-This library provides some support code for supplimenting the standard System.Diagnostics assembly.
+This library provides some support code for supplementing the standard System.Diagnostics assembly.
 
 ## Performance counters
 
-A framework for performance counters addresses three issues: ease of development, testability, useability.
+A framework for performance counters addresses three issues: ease of development, testability, usability.
 
 ### Ease of development & testability
 
 When writing code which contains performance counters, development is hampered by having to register performance
 counters before debugging the code. The same problem arises in testing.
-This issue is addressed by creating an interface IPerformanceCounter, a factory
-IPerformanceCounterFactory. This means that in development and test we can mock the counters
-before installing them in production code.
+This issue is addressed by creating an interface [`IPerformanceCounter`](https://github.com/rob-blackbourn/JetBlack.Diagnostics/blob/master/JetBlack.Diagnostics/IPerformanceCounter.cs),
+a factory [`IPerformanceCounterFactory`](https://github.com/rob-blackbourn/JetBlack.Diagnostics/blob/master/JetBlack.Diagnostics/IPerformanceCounterFactory.cs).
+This means that in development and test we can mock the counters before installing them in production code.
 
-### Useability
+### Usability
 
 Under the hood a performance counter is essentially a long, a timestamp, and a type. The type determines the calculation
 performed when the counter is sampled. The system also understands how to combine two counters of specific types
-(usually a counter and a base) to provide more sophisticated statics like average time spent performing an
+(a counter and a base) to provide more sophisticated statics; like average time spent performing an
 operation. They need to be registered before use; and in the case of composite counters we must ensure the counter and base
-counter is registered consequtively and in order.
+are registered consequtively and in order.
 
-An example of this is the integer average timeer. It consists of a numerator of type AverageCouter32 and a denominator of
-AverageBase. The average time is achieved by incrementing tyhe numerator by the elapsed ticks, and the denominator by one.
-When registered we must ensure that the numerator is created before the denominator which must immediately succeed it.
+An example of this is the integer average timeer. It consists of a numerator of [type](https://msdn.microsoft.com/en-us/library/system.diagnostics.performancecountertype.aspx)
+`AverageCouter32` and a denominator of `AverageBase`. The average time is achieved by incrementing tyhe numerator
+by the elapsed ticks, and the denominator by one. When registered we must ensure that the numerator is created before
+the denominator which must immediately succeed it.
 
-The IntAverageTimer class provides this functionality. The increment method with the supplied elapsed ticks updates the
+The `IntAverageTimer` class provides this functionality. The increment method with the supplied elapsed ticks updates the
 numerator by the ticks an the denominator by one. A static method can create the counter data for an installer. As the method
 uses a factory interface to create it's counters, development and testing are not hampered by the need for registration.
 
 ### Example
 
-If we imagine a lazy cache, we might want to monitor the number of time a fetch occurs, and the time it takes to do the fetch.
-The monitor claas might look as follows.
+If we imagine a lazy cache, we might want to monitor the number of times a fetch occurs, and the average time it takes to do
+ the fetch. The monitor class might look as follows.
 
 ```cs
 public class CacheMonitor
@@ -72,7 +73,7 @@ public class CacheMonitor
 
 Note that a counter factory is used to generate the counter to provide mock support.
 
-The cache could be implemented as follows.
+The cache might be implemented as follows.
 
 ```cs
 public delegate bool TryGetValue<TKey, TValue>(TKey key, out TValue value);
