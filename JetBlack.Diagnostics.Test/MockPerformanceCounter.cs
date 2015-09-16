@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using JetBlack.Diagnostics.Monitoring;
 
 namespace JetBlack.Diagnostics.Test
 {

@@ -1,24 +1,20 @@
 ﻿using System.Diagnostics;
 
-namespace JetBlack.Diagnostics
+namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
-    /// An average counter that shows how many items are processed, on average,
-    /// during an operation. Counters of this type display a ratio of the items
-    /// processed to the number of operations completed. The ratio is
-    /// calculated by comparing the number of items processed during the last
-    /// interval to the number of operations completed during the last interval.
+    /// A percentage counter that shows the average ratio of hits to all
+    /// operations during the last two sample intervals.
     /// 
-    /// Formula: (N 1 -N 0)/(B 1 -B 0), where N 1 and N 0 are performance
-    /// counter readings, and the B 1 and B 0 are their corresponding
-    /// AverageBase values. Thus, the numerator represents the numbers of
-    /// items processed during the sample interval, and the denominator
-    /// represents the number of operations completed during the sample
-    /// interval.
+    /// Formula: ((N1 - N0) / (D1 - D0)) x 100, where the numerator represents
+    /// the number of successful operations during the last sample interval,
+    /// and the denominator represents the change in the number of all
+    /// operations (of the type measured) completed during the sample interval,
+    /// using counters of type SampleBase.
     /// 
-    /// Counters of this type include PhysicalDisk\ Avg. Disk Bytes/Transfer.
+    /// Counters of this type include Cache\Pin Read Hits %.
     /// </summary>
-    public class AverageCount : ICompositeCounter
+    public class SampleFraction : ICompositeCounter
     {
         private static ICounterCreator _counterCreator;
 
@@ -30,7 +26,7 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.AverageCount64;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.SampleFraction;
 
         /// <summary>
         /// The actual performance counter.
@@ -40,7 +36,7 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The base counter type.
         /// </summary>
-        public const PerformanceCounterType BaseCounterType = PerformanceCounterType.AverageBase;
+        public const PerformanceCounterType BaseCounterType = PerformanceCounterType.SampleBase;
 
         /// <summary>
         /// The base performance counter.
@@ -52,7 +48,7 @@ namespace JetBlack.Diagnostics
         /// </summary>
         /// <param name="counter">The primary counter.</param>
         /// <param name="counterBase">The base counter.</param>
-        private AverageCount(IPerformanceCounter counter, IPerformanceCounter counterBase)
+        private SampleFraction(IPerformanceCounter counter, IPerformanceCounter counterBase)
         {
             Counter = counter;
             CounterBase = counterBase;
@@ -65,7 +61,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category name.</param>
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="readOnly">If true the counters will be read only, otherwise they will be writeable.</param>
-        public AverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public SampleFraction(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, readOnly),
                 factory.Create(categoryName, counterName + CompositeCounterCreator.BaseSuffix, readOnly))
@@ -80,7 +76,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="instanceName">The instance name.</param>
         /// <param name="readOnly">If true the counters will be read only, otherwise they will be writeable.</param>
-        public AverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public SampleFraction(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, instanceName, readOnly),
                 factory.Create(categoryName, counterName + CompositeCounterCreator.BaseSuffix, instanceName, readOnly))
@@ -95,7 +91,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="instanceName">The instance name.</param>
         /// <param name="machineName">The machine name.</param>
-        public AverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public SampleFraction(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(
                 factory.Create(categoryName, counterName, instanceName, machineName),
                 factory.Create(categoryName, counterName + CompositeCounterCreator.BaseSuffix, instanceName, machineName))
@@ -105,7 +101,8 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// Resets the counter.
         /// </summary>
-        public void Reset()
+        /// <param name="denominator">A fixed denominator.</param>
+        public void Reset(long denominator)
         {
             Counter.RawValue = 0;
             CounterBase.RawValue = 0;
@@ -114,7 +111,7 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The raw value of the counter.
         /// </summary>
-        public int RawValue
+        public int Numerator
         {
             get { return (int)Counter.RawValue; }
             set { Counter.RawValue = value; }
@@ -123,21 +120,35 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The raw value of the base counter.
         /// </summary>
-        public long RawValueBase
+        public long Denominator
         {
             get { return CounterBase.RawValue; }
             set { CounterBase.RawValue = value; }
         }
 
         /// <summary>
-        /// Increments the counter by the number of items processed and the number of operations completed.
+        /// Increments the numerator.
         /// </summary>
-        /// <param name="itemsProcessed">The number of items processed.</param>
-        /// <param name="operationsCompleted">The number of operations completed.</param>
-        public void Increment(long itemsProcessed, long operationsCompleted)
+        public void Increment()
         {
-            Counter.IncrementBy(itemsProcessed);
-            CounterBase.IncrementBy(operationsCompleted);
+            Counter.Increment();
+        }
+
+        /// <summary>
+        /// Decrements the numerator.
+        /// </summary>
+        public void Decrement()
+        {
+            Counter.Increment();
+        }
+
+        /// <summary>
+        /// Increments the numerator byb a possibly negative value.
+        /// </summary>
+        /// <param name="value">The value by which the numerator should be incremented.</param>
+        public void IncrementBy(long value)
+        {
+            Counter.IncrementBy(value);
         }
 
         /// <summary>

@@ -1,20 +1,17 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
-namespace JetBlack.Diagnostics
+namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
-    /// A difference timer that shows the total time between when the component
-    /// or process started and the time when this value is calculated.
+    /// An instantaneous counter that shows the most recently observed value.
+    /// Used, for example, to maintain a simple count of a very large number
+    /// of items or operations. It is the same as NumberOfItems32 except that
+    /// it uses larger fields to accommodate larger values.
     /// 
-    /// Formula: (D0 - N0) / F, where D0 represents the current time, N0
-    /// represents the time the object was started, and F represents the number
-    /// of time units that elapse in one second. The value of F is factored
-    /// into the equation so that the result can be displayed in seconds.
-    /// 
-    /// Counters of this type include System\ System Up Time.
+    /// Formula: None. Does not display an average, but shows the raw data as
+    /// it is collected.
     /// </summary>
-    public class ElapsedTime : ICounter
+    public class NumberOfItems64 : ICounter
     {
         private static ICounterCreator _counterCreator;
 
@@ -23,15 +20,13 @@ namespace JetBlack.Diagnostics
         /// </summary>
         public static ICounterCreator CounterCreator { get { return _counterCreator ?? (_counterCreator = new CounterCreator(CounterType)); } }
 
-        private readonly Stopwatch _stopWatch = new Stopwatch();
-
         /// <summary>
-        /// The performance counter type.
+        /// The counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.ElapsedTime;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.NumberOfItems64;
 
         /// <summary>
-        /// The performance counter managed by this class.
+        /// The actual performance counter.
         /// </summary>
         public IPerformanceCounter Counter { get; private set; }
 
@@ -42,7 +37,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category of the counter.</param>
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public ElapsedTime(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public NumberOfItems64(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(factory.Create(categoryName, counterName, readOnly))
         {
         }
@@ -55,7 +50,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public ElapsedTime(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public NumberOfItems64(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(factory.Create(categoryName, counterName, instanceName, readOnly))
         {
         }
@@ -68,12 +63,12 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="machineName">The machine name.</param>
-        public ElapsedTime(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public NumberOfItems64(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(factory.Create(categoryName, counterName, instanceName, machineName))
         {
         }
 
-        private ElapsedTime(IPerformanceCounter counter)
+        private NumberOfItems64(IPerformanceCounter counter)
         {
             Counter = counter;
         }
@@ -83,12 +78,11 @@ namespace JetBlack.Diagnostics
         /// </summary>
         public void Reset()
         {
-            RawValue = DateTime.Now.Ticks;
-            _stopWatch.Start();
+            RawValue = 0;
         }
 
         /// <summary>
-        /// Gets the ticks elapsed.
+        /// The raw value of the counter.
         /// </summary>
         public long RawValue
         {
@@ -97,14 +91,31 @@ namespace JetBlack.Diagnostics
         }
 
         /// <summary>
-        /// Increments the counter with the number of ticks since the last increment or reset.
+        /// Increment the counter by one.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The new value of the counter.</returns>
         public long Increment()
         {
-            var ticks = _stopWatch.ElapsedTicks;
-            Counter.RawValue = ticks;
-            return ticks;
+            return Counter.Increment();
+        }
+
+        /// <summary>
+        /// Decrement the counter by one.
+        /// </summary>
+        /// <returns>The new value of the counter.</returns>
+        public long Decrement()
+        {
+            return Counter.Decrement();
+        }
+
+        /// <summary>
+        /// Increment the counter by a specific value which can be negative.
+        /// </summary>
+        /// <param name="value">The value to incrment the counter by.</param>
+        /// <returns>The new value of the counter.</returns>
+        public long IncrementBy(long value)
+        {
+            return Counter.IncrementBy(value);
         }
 
         /// <summary>

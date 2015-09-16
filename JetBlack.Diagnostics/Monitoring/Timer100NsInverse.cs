@@ -1,21 +1,23 @@
 ﻿using System.Diagnostics;
 
-namespace JetBlack.Diagnostics
+namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
-    /// A percentage counter that shows the active time of a component as a
-    /// percentage of the total elapsed time of the sample interval. It
-    /// measures time in units of 100 nanoseconds (ns). Counters of this
-    /// type are designed to measure the activity of one component at a time.
+    /// A percentage counter that shows the average percentage of active time
+    /// observed during the sample interval.
     /// 
-    /// Formula: (N1 - N0) / (D1 - D0) x 100, where the numerator represents
-    /// the portions of the sample interval during which the monitored
-    /// components were active, and the denominator represents the total
-    /// elapsed time of the sample interval.
+    /// This is an inverse counter. Counters of this type calculate active time
+    /// by measuring the time that the service was inactive and then subtracting
+    /// the percentage of active time from 100 percent.
     /// 
-    /// Counters of this type include Processor\ % User Time.
+    /// Formula: (1 - ((N1 - N0) / (D1 - D0))) x 100, where the numerator
+    /// represents the time during the interval when the monitored components
+    /// were inactive, and the denominator represents the total elapsed time of
+    /// the sample interval.
+    /// 
+    /// Counters of this type include Processor\ % Processor Time.
     /// </summary>
-    public class Timer100Ns : ICounter
+    public class Timer100NsInverse : ICounter
     {
         private static ICounterCreator _counterCreator;
 
@@ -27,7 +29,7 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.Timer100Ns;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.Timer100NsInverse;
 
         /// <summary>
         /// The actual performance counter.
@@ -41,7 +43,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category of the counter.</param>
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public Timer100Ns(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public Timer100NsInverse(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(factory.Create(categoryName, counterName, readOnly))
         {
         }
@@ -54,7 +56,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public Timer100Ns(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public Timer100NsInverse(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(factory.Create(categoryName, counterName, instanceName, readOnly))
         {
         }
@@ -67,12 +69,12 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="machineName">The machine name.</param>
-        public Timer100Ns(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public Timer100NsInverse(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(factory.Create(categoryName, counterName, instanceName, machineName))
         {
         }
 
-        private Timer100Ns(IPerformanceCounter counter)
+        private Timer100NsInverse(IPerformanceCounter counter)
         {
             Counter = counter;
         }

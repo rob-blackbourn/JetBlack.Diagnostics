@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using JetBlack.Diagnostics.Monitoring;
 
 namespace JetBlack.Diagnostics.Test
 {

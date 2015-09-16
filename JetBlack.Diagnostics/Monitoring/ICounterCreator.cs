@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace JetBlack.Diagnostics
+namespace JetBlack.Diagnostics.Monitoring
 {
     public interface ICounterCreator
     {

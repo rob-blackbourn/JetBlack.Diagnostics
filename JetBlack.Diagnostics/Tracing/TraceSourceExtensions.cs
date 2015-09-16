@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace JetBlack.Diagnostics
+namespace JetBlack.Diagnostics.Tracing
 {
     public static class TraceSourceExtensions
     {

@@ -1,17 +1,21 @@
 ﻿using System.Diagnostics;
 
-namespace JetBlack.Diagnostics
+namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
-    /// An instantaneous counter that shows the most recently observed value.
-    /// Used, for example, to maintain a simple count of items or operations.
+    /// A percentage counter that shows the active time of a component as a
+    /// percentage of the total elapsed time of the sample interval. It
+    /// measures time in units of 100 nanoseconds (ns). Counters of this
+    /// type are designed to measure the activity of one component at a time.
     /// 
-    /// Formula: None. Does not display an average, but shows the raw data as
-    /// it is collected.
+    /// Formula: (N1 - N0) / (D1 - D0) x 100, where the numerator represents
+    /// the portions of the sample interval during which the monitored
+    /// components were active, and the denominator represents the total
+    /// elapsed time of the sample interval.
     /// 
-    /// Counters of this type include Memory\Available Bytes.
+    /// Counters of this type include Processor\ % User Time.
     /// </summary>
-    public class NumberOfItems32 : ICounter
+    public class Timer100Ns : ICounter
     {
         private static ICounterCreator _counterCreator;
 
@@ -23,7 +27,7 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.NumberOfItems32;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.Timer100Ns;
 
         /// <summary>
         /// The actual performance counter.
@@ -37,7 +41,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category of the counter.</param>
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public NumberOfItems32(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public Timer100Ns(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(factory.Create(categoryName, counterName, readOnly))
         {
         }
@@ -50,7 +54,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public NumberOfItems32(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public Timer100Ns(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(factory.Create(categoryName, counterName, instanceName, readOnly))
         {
         }
@@ -63,12 +67,12 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="machineName">The machine name.</param>
-        public NumberOfItems32(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public Timer100Ns(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(factory.Create(categoryName, counterName, instanceName, machineName))
         {
         }
 
-        private NumberOfItems32(IPerformanceCounter counter)
+        private Timer100Ns(IPerformanceCounter counter)
         {
             Counter = counter;
         }
@@ -84,38 +88,20 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The raw value of the counter.
         /// </summary>
-        public int RawValue
+        public long RawValue
         {
-            get { return (int)Counter.RawValue; }
+            get { return Counter.RawValue; }
             set { Counter.RawValue = value; }
-        }
-
-        /// <summary>
-        /// Increment the counter by one.
-        /// </summary>
-        /// <returns>The new value of the counter.</returns>
-        public int Increment()
-        {
-            return (int)Counter.Increment();
-        }
-
-        /// <summary>
-        /// Decrement the counter by one.
-        /// </summary>
-        /// <returns>The new value of the counter.</returns>
-        public int Decrement()
-        {
-            return (int)Counter.Decrement();
         }
 
         /// <summary>
         /// Increment the counter by a specific value which can be negative.
         /// </summary>
-        /// <param name="value">The value to incrment the counter by.</param>
+        /// <param name="ticks">The value to incrment the counter by.</param>
         /// <returns>The new value of the counter.</returns>
-        public int IncrementBy(int value)
+        public long IncrementBy(long ticks)
         {
-            return (int)Counter.IncrementBy(value);
+            return Counter.IncrementBy(ticks);
         }
 
         /// <summary>

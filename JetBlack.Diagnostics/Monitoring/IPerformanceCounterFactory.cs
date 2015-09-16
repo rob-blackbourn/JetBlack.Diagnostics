@@ -1,4 +1,4 @@
-﻿namespace JetBlack.Diagnostics
+﻿namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
     /// An interface defining the methods required to create performance counters.

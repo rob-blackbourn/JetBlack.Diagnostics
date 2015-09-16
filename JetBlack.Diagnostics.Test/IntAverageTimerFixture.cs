@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using JetBlack.Diagnostics.Monitoring;
+using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.Threading;

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace JetBlack.Diagnostics
+namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
     /// A wrapper class around a true performance counter.

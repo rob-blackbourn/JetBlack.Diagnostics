@@ -1,4 +1,4 @@
-﻿namespace JetBlack.Diagnostics
+﻿namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
     /// Describes a class which manages composite performance counter.

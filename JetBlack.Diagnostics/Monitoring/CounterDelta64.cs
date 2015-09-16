@@ -1,23 +1,16 @@
 ﻿using System.Diagnostics;
 
-namespace JetBlack.Diagnostics
+namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
-    /// A percentage counter that shows the average percentage of active time
-    /// observed during the sample interval.
+    /// A difference counter that shows the change in the measured attribute
+    /// between the two most recent sample intervals. It is the same as the
+    /// CounterDelta32 counter type except that is uses larger fields to
+    /// accomodate larger values.
     /// 
-    /// This is an inverse counter. Counters of this type calculate active time
-    /// by measuring the time that the service was inactive and then subtracting
-    /// the percentage of active time from 100 percent.
-    /// 
-    /// Formula: (1 - ((N1 - N0) / (D1 - D0))) x 100, where the numerator
-    /// represents the time during the interval when the monitored components
-    /// were inactive, and the denominator represents the total elapsed time of
-    /// the sample interval.
-    /// 
-    /// Counters of this type include Processor\ % Processor Time.
+    /// Formula: N1 - N0, where N1 and N0 are performance counter readings.
     /// </summary>
-    public class Timer100NsInverse : ICounter
+    public class CounterDelta64 : ICounter
     {
         private static ICounterCreator _counterCreator;
 
@@ -29,7 +22,7 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.Timer100NsInverse;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.CounterDelta64;
 
         /// <summary>
         /// The actual performance counter.
@@ -43,7 +36,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category of the counter.</param>
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public Timer100NsInverse(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public CounterDelta64(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(factory.Create(categoryName, counterName, readOnly))
         {
         }
@@ -56,7 +49,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public Timer100NsInverse(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public CounterDelta64(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(factory.Create(categoryName, counterName, instanceName, readOnly))
         {
         }
@@ -69,12 +62,12 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="machineName">The machine name.</param>
-        public Timer100NsInverse(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public CounterDelta64(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(factory.Create(categoryName, counterName, instanceName, machineName))
         {
         }
 
-        private Timer100NsInverse(IPerformanceCounter counter)
+        private CounterDelta64(IPerformanceCounter counter)
         {
             Counter = counter;
         }
@@ -97,13 +90,31 @@ namespace JetBlack.Diagnostics
         }
 
         /// <summary>
+        /// Increment the counter by one.
+        /// </summary>
+        /// <returns>The new value of the counter.</returns>
+        public long Increment()
+        {
+            return Counter.Increment();
+        }
+
+        /// <summary>
+        /// Decrement the counter by one.
+        /// </summary>
+        /// <returns>The new value of the counter.</returns>
+        public long Decrement()
+        {
+            return Counter.Decrement();
+        }
+
+        /// <summary>
         /// Increment the counter by a specific value which can be negative.
         /// </summary>
-        /// <param name="ticks">The value to incrment the counter by.</param>
+        /// <param name="value">The value to incrment the counter by.</param>
         /// <returns>The new value of the counter.</returns>
-        public long IncrementBy(long ticks)
+        public long IncrementBy(long value)
         {
-            return Counter.IncrementBy(ticks);
+            return Counter.IncrementBy(value);
         }
 
         /// <summary>

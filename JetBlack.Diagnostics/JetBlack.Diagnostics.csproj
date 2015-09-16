@@ -39,32 +39,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompositeCounterCreator.cs" />
-    <Compile Include="CounterCreator.cs" />
-    <Compile Include="CounterTimer.cs" />
-    <Compile Include="ElapsedTime.cs" />
-    <Compile Include="ICompositeCounter.cs" />
-    <Compile Include="ICounter.cs" />
-    <Compile Include="AverageTimer.cs" />
-    <Compile Include="CounterDelta32.cs" />
-    <Compile Include="ICounterCreator.cs" />
-    <Compile Include="NumberOfItems32.cs" />
-    <Compile Include="RateOfCountsPerSecond32.cs" />
-    <Compile Include="IPerformanceCounter.cs" />
-    <Compile Include="IPerformanceCounterFactory.cs" />
-    <Compile Include="AverageCount.cs" />
-    <Compile Include="CounterDelta64.cs" />
-    <Compile Include="NumberOfItems64.cs" />
-    <Compile Include="RateOfCountsPerSecond64.cs" />
-    <Compile Include="PerformanceCounterFactory.cs" />
-    <Compile Include="PerformanceCounterImpl.cs" />
+    <Compile Include="Monitoring\CompositeCounterCreator.cs" />
+    <Compile Include="Monitoring\CounterCreator.cs" />
+    <Compile Include="Monitoring\CounterTimer.cs" />
+    <Compile Include="Monitoring\ElapsedTime.cs" />
+    <Compile Include="Monitoring\ICompositeCounter.cs" />
+    <Compile Include="Monitoring\ICounter.cs" />
+    <Compile Include="Monitoring\AverageTimer.cs" />
+    <Compile Include="Monitoring\CounterDelta32.cs" />
+    <Compile Include="Monitoring\ICounterCreator.cs" />
+    <Compile Include="Monitoring\NumberOfItems32.cs" />
+    <Compile Include="Monitoring\RateOfCountsPerSecond32.cs" />
+    <Compile Include="Monitoring\IPerformanceCounter.cs" />
+    <Compile Include="Monitoring\IPerformanceCounterFactory.cs" />
+    <Compile Include="Monitoring\AverageCount.cs" />
+    <Compile Include="Monitoring\CounterDelta64.cs" />
+    <Compile Include="Monitoring\NumberOfItems64.cs" />
+    <Compile Include="Monitoring\RateOfCountsPerSecond64.cs" />
+    <Compile Include="Monitoring\PerformanceCounterFactory.cs" />
+    <Compile Include="Monitoring\PerformanceCounterImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawFraction.cs" />
-    <Compile Include="SampleCounter.cs" />
-    <Compile Include="SampleFraction.cs" />
-    <Compile Include="Timer100Ns.cs" />
-    <Compile Include="Timer100NsInverse.cs" />
-    <Compile Include="TraceSourceExtensions.cs" />
+    <Compile Include="Monitoring\RawFraction.cs" />
+    <Compile Include="Monitoring\SampleCounter.cs" />
+    <Compile Include="Monitoring\SampleFraction.cs" />
+    <Compile Include="Monitoring\Timer100Ns.cs" />
+    <Compile Include="Monitoring\Timer100NsInverse.cs" />
+    <Compile Include="Tracing\TraceSourceExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JetBlack.Diagnostics
+namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
     /// An interface describing a performance counter.

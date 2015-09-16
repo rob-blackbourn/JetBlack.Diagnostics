@@ -1,4 +1,4 @@
-﻿namespace JetBlack.Diagnostics
+﻿namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
     /// A factory to create performance counters.

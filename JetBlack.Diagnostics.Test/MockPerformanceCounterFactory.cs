@@ -1,4 +1,6 @@
-﻿namespace JetBlack.Diagnostics.Test
+﻿using JetBlack.Diagnostics.Monitoring;
+
+namespace JetBlack.Diagnostics.Test
 {
     /// <summary>
     /// Creates a performance counter factory suitable for development and testing.
