@@ -3,9 +3,9 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A class which wraps the implementation of an average timer.
+    /// A raw fraction. This requires the denominator to be set.
     /// </summary>
-    public class IntAverageTimer : ICompositeCounter
+    public class RawFraction : ICompositeCounter
     {
         /// <summary>
         /// The suffix of the base counter.
@@ -15,7 +15,7 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.AverageTimer32;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.RawFraction;
 
         /// <summary>
         /// The actual performance counter.
@@ -25,7 +25,7 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The base counter type.
         /// </summary>
-        public const PerformanceCounterType BaseCounterType = PerformanceCounterType.AverageBase;
+        public const PerformanceCounterType BaseCounterType = PerformanceCounterType.RawBase;
 
         /// <summary>
         /// The base performance counter.
@@ -37,7 +37,7 @@ namespace JetBlack.Diagnostics
         /// </summary>
         /// <param name="counter">The primary counter.</param>
         /// <param name="counterBase">The base counter.</param>
-        private IntAverageTimer(IPerformanceCounter counter, IPerformanceCounter counterBase)
+        private RawFraction(IPerformanceCounter counter, IPerformanceCounter counterBase)
         {
             Counter = counter;
             CounterBase = counterBase;
@@ -50,7 +50,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category name.</param>
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="readOnly">If true the counters will be read only, otherwise they will be writeable.</param>
-        public IntAverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public RawFraction(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, readOnly),
                 factory.Create(categoryName, counterName + BaseSuffix, readOnly))
@@ -65,7 +65,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="instanceName">The instance name.</param>
         /// <param name="readOnly">If true the counters will be read only, otherwise they will be writeable.</param>
-        public IntAverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public RawFraction(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, instanceName, readOnly),
                 factory.Create(categoryName, counterName + BaseSuffix, instanceName, readOnly))
@@ -80,7 +80,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="instanceName">The instance name.</param>
         /// <param name="machineName">The machine name.</param>
-        public IntAverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public RawFraction(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(
                 factory.Create(categoryName, counterName, instanceName, machineName),
                 factory.Create(categoryName, counterName + BaseSuffix, instanceName, machineName))
@@ -90,7 +90,8 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// Resets the counter.
         /// </summary>
-        public void Reset()
+        /// <param name="denominator">A fixed denominator.</param>
+        public void Reset(long denominator)
         {
             Counter.RawValue = 0;
             CounterBase.RawValue = 0;
@@ -99,7 +100,7 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The raw value of the counter.
         /// </summary>
-        public int RawValue
+        public int Numerator
         {
             get { return (int)Counter.RawValue; }
             set { Counter.RawValue = value; }
@@ -108,20 +109,35 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The raw value of the base counter.
         /// </summary>
-        public long RawValueBase
+        public long Denominator
         {
             get { return CounterBase.RawValue; }
             set { CounterBase.RawValue = value; }
         }
 
         /// <summary>
-        /// Increments the primary counter by one and the base counter by the elapsed ticks.
+        /// Increments the numerator.
         /// </summary>
-        /// <param name="elapsedTicks">The number of ticks elapsed while performing a single operation.</param>
-        public void Increment(long elapsedTicks)
+        public void Increment()
         {
-            Counter.IncrementBy(elapsedTicks);
-            CounterBase.Increment();
+            Counter.Increment();
+        }
+
+        /// <summary>
+        /// Decrements the numerator.
+        /// </summary>
+        public void Decrement()
+        {
+            Counter.Increment();
+        }
+
+        /// <summary>
+        /// Increments the numerator byb a possibly negative value.
+        /// </summary>
+        /// <param name="value">The value by which the numerator should be incremented.</param>
+        public void IncrementBy(long value)
+        {
+            Counter.IncrementBy(value);
         }
 
         /// <summary>
