@@ -3,17 +3,20 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A difference counter that shows the change in the measured attribute
-    /// between the two most recent sample intervals.
+    /// An instantaneous counter that shows the most recently observed value.
+    /// Used, for example, to maintain a simple count of items or operations.
     /// 
-    /// Formula: N1 -N0, where N1 and N0 are performance counter readings.
+    /// Formula: None. Does not display an average, but shows the raw data as
+    /// it is collected.
+    /// 
+    /// Counters of this type include Memory\Available Bytes.
     /// </summary>
-    public class IntCounterDelta : ICounter
+    public class NumberOfItems32 : ICounter
     {
         /// <summary>
         /// The counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.CounterDelta32;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.NumberOfItems32;
 
         /// <summary>
         /// The actual performance counter.
@@ -27,7 +30,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category of the counter.</param>
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public IntCounterDelta(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public NumberOfItems32(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(factory.Create(categoryName, counterName, readOnly))
         {
         }
@@ -40,7 +43,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public IntCounterDelta(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public NumberOfItems32(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(factory.Create(categoryName, counterName, instanceName, readOnly))
         {
         }
@@ -53,12 +56,12 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="machineName">The machine name.</param>
-        public IntCounterDelta(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public NumberOfItems32(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(factory.Create(categoryName, counterName, instanceName, machineName))
         {
         }
 
-        private IntCounterDelta(IPerformanceCounter counter)
+        private NumberOfItems32(IPerformanceCounter counter)
         {
             Counter = counter;
         }

@@ -5,25 +5,28 @@ namespace JetBlack.Diagnostics
     /// <summary>
     /// A difference counter that shows the average number of operations
     /// completed during each second of the sample interval. Counters of this
-    /// type measure time in ticks of the system clock.
+    /// type measure time in ticks of the system clock. This counter type is
+    /// the same as the RateOfCountsPerSecond32 type, but it uses larger fields
+    /// to accommodate larger values to track a high-volume number of items or
+    /// operations per second, such as a byte-transmission rate.
     /// 
-    /// Formula: (N1 - N0) / ((D1 -D0) / F), where N1 and N0 are performance
+    /// Formula: (N1 - N0) / ((D1 - D0) / F), where N1 and N0 are performance
     /// counter readings, D1 and D0 are their corresponding time readings, and
     /// F represents the number of ticks per second. Thus, the numerator
     /// represents the number of operations performed during the last sample
     /// interval, the denominator represents the number of ticks elapsed during
-    /// the last sample interval, and F is the frequency of the ticks. The
-    /// value of F is factored into the equation so that the result can be
-    /// displayed in seconds.
+    /// the last sample interval, and F is the frequency of the ticks. The value
+    /// of F is factored into the equation so that the result can be displayed
+    /// in seconds.
     /// 
-    /// Counters of this type include System\ File Read Operations/sec.
+    /// Counters of this type include System\ File Read Bytes/sec.
     /// </summary>
-    public class IntRateOfCountsPerSecond : ICounter
+    public class RateOfCountsPerSecond64 : ICounter
     {
         /// <summary>
         /// The performance counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.RateOfCountsPerSecond32;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.RateOfCountsPerSecond64;
 
         /// <summary>
         /// The performance counter managed by this class.
@@ -37,7 +40,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category of the counter.</param>
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public IntRateOfCountsPerSecond(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public RateOfCountsPerSecond64(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(factory.Create(categoryName, counterName, readOnly))
         {
         }
@@ -50,7 +53,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public IntRateOfCountsPerSecond(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public RateOfCountsPerSecond64(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(factory.Create(categoryName, counterName, instanceName, readOnly))
         {
         }
@@ -63,12 +66,12 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="machineName">The machine name.</param>
-        public IntRateOfCountsPerSecond(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public RateOfCountsPerSecond64(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(factory.Create(categoryName, counterName, instanceName, machineName))
         {
         }
 
-        private IntRateOfCountsPerSecond(IPerformanceCounter counter)
+        private RateOfCountsPerSecond64(IPerformanceCounter counter)
         {
             Counter = counter;
         }
@@ -94,9 +97,9 @@ namespace JetBlack.Diagnostics
         /// Increments the counter by one operation.
         /// </summary>
         /// <returns></returns>
-        public int Increment()
+        public long Increment()
         {
-            return (int)Counter.Increment();
+            return Counter.Increment();
         }
 
         /// <summary>

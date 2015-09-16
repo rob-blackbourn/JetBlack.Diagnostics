@@ -20,7 +20,7 @@ namespace JetBlack.Diagnostics
     /// 
     /// Counters of this type include PhysicalDisk\ Avg. Disk sec/Transfer.
     /// </summary>
-    public class IntAverageTimer : ICompositeCounter
+    public class AverageTimer : ICompositeCounter
     {
         /// <summary>
         /// The suffix of the base counter.
@@ -52,7 +52,7 @@ namespace JetBlack.Diagnostics
         /// </summary>
         /// <param name="counter">The primary counter.</param>
         /// <param name="counterBase">The base counter.</param>
-        private IntAverageTimer(IPerformanceCounter counter, IPerformanceCounter counterBase)
+        private AverageTimer(IPerformanceCounter counter, IPerformanceCounter counterBase)
         {
             Counter = counter;
             CounterBase = counterBase;
@@ -65,7 +65,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category name.</param>
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="readOnly">If true the counters will be read only, otherwise they will be writeable.</param>
-        public IntAverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public AverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, readOnly),
                 factory.Create(categoryName, counterName + BaseSuffix, readOnly))
@@ -80,7 +80,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="instanceName">The instance name.</param>
         /// <param name="readOnly">If true the counters will be read only, otherwise they will be writeable.</param>
-        public IntAverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public AverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, instanceName, readOnly),
                 factory.Create(categoryName, counterName + BaseSuffix, instanceName, readOnly))
@@ -95,7 +95,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="instanceName">The instance name.</param>
         /// <param name="machineName">The machine name.</param>
-        public IntAverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public AverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(
                 factory.Create(categoryName, counterName, instanceName, machineName),
                 factory.Create(categoryName, counterName + BaseSuffix, instanceName, machineName))

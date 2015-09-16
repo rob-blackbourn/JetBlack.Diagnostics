@@ -3,44 +3,33 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A difference counter that shows the average number of operations
-    /// completed during each second of the sample interval. Counters of this
-    /// type measure time in ticks of the system clock. This counter type is
-    /// the same as the RateOfCountsPerSecond32 type, but it uses larger fields
-    /// to accommodate larger values to track a high-volume number of items or
-    /// operations per second, such as a byte-transmission rate.
+    /// A difference counter that shows the change in the measured attribute
+    /// between the two most recent sample intervals. It is the same as the
+    /// CounterDelta32 counter type except that is uses larger fields to
+    /// accomodate larger values.
     /// 
-    /// Formula: (N1 - N0) / ((D1 - D0) / F), where N1 and N0 are performance
-    /// counter readings, D1 and D0 are their corresponding time readings, and
-    /// F represents the number of ticks per second. Thus, the numerator
-    /// represents the number of operations performed during the last sample
-    /// interval, the denominator represents the number of ticks elapsed during
-    /// the last sample interval, and F is the frequency of the ticks. The value
-    /// of F is factored into the equation so that the result can be displayed
-    /// in seconds.
-    /// 
-    /// Counters of this type include System\ File Read Bytes/sec.
+    /// Formula: N1 - N0, where N1 and N0 are performance counter readings.
     /// </summary>
-    public class LongRateOfCountsPerSecond : ICounter
+    public class CounterDelta64 : ICounter
     {
         /// <summary>
-        /// The performance counter type.
+        /// The counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.RateOfCountsPerSecond64;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.CounterDelta64;
 
         /// <summary>
-        /// The performance counter managed by this class.
+        /// The actual performance counter.
         /// </summary>
         public IPerformanceCounter Counter { get; private set; }
 
-                /// <summary>
+        /// <summary>
         /// Construct a single instance counter.
         /// </summary>
         /// <param name="factory">The factory used to create the counter.</param>
         /// <param name="categoryName">The category of the counter.</param>
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public LongRateOfCountsPerSecond(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public CounterDelta64(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(factory.Create(categoryName, counterName, readOnly))
         {
         }
@@ -53,7 +42,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public LongRateOfCountsPerSecond(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public CounterDelta64(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(factory.Create(categoryName, counterName, instanceName, readOnly))
         {
         }
@@ -66,23 +55,14 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="machineName">The machine name.</param>
-        public LongRateOfCountsPerSecond(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public CounterDelta64(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(factory.Create(categoryName, counterName, instanceName, machineName))
         {
         }
 
-        private LongRateOfCountsPerSecond(IPerformanceCounter counter)
+        private CounterDelta64(IPerformanceCounter counter)
         {
             Counter = counter;
-        }
-
-        /// <summary>
-        /// The count.
-        /// </summary>
-        public long RawValue
-        {
-            get { return Counter.RawValue; }
-            set { Counter.RawValue = value; }
         }
 
         /// <summary>
@@ -94,12 +74,40 @@ namespace JetBlack.Diagnostics
         }
 
         /// <summary>
-        /// Increments the counter by one operation.
+        /// The raw value of the counter.
         /// </summary>
-        /// <returns></returns>
+        public long RawValue
+        {
+            get { return Counter.RawValue; }
+            set { Counter.RawValue = value; }
+        }
+
+        /// <summary>
+        /// Increment the counter by one.
+        /// </summary>
+        /// <returns>The new value of the counter.</returns>
         public long Increment()
         {
             return Counter.Increment();
+        }
+
+        /// <summary>
+        /// Decrement the counter by one.
+        /// </summary>
+        /// <returns>The new value of the counter.</returns>
+        public long Decrement()
+        {
+            return Counter.Decrement();
+        }
+
+        /// <summary>
+        /// Increment the counter by a specific value which can be negative.
+        /// </summary>
+        /// <param name="value">The value to incrment the counter by.</param>
+        /// <returns>The new value of the counter.</returns>
+        public long IncrementBy(long value)
+        {
+            return Counter.IncrementBy(value);
         }
 
         /// <summary>

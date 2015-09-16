@@ -3,20 +3,17 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// An instantaneous counter that shows the most recently observed value.
-    /// Used, for example, to maintain a simple count of a very large number
-    /// of items or operations. It is the same as NumberOfItems32 except that
-    /// it uses larger fields to accommodate larger values.
+    /// A difference counter that shows the change in the measured attribute
+    /// between the two most recent sample intervals.
     /// 
-    /// Formula: None. Does not display an average, but shows the raw data as
-    /// it is collected.
+    /// Formula: N1 -N0, where N1 and N0 are performance counter readings.
     /// </summary>
-    public class LongNumberOfItems : ICounter
+    public class CounterDelta32 : ICounter
     {
         /// <summary>
         /// The counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.NumberOfItems64;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.CounterDelta32;
 
         /// <summary>
         /// The actual performance counter.
@@ -30,7 +27,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category of the counter.</param>
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public LongNumberOfItems(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public CounterDelta32(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(factory.Create(categoryName, counterName, readOnly))
         {
         }
@@ -43,7 +40,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="readOnly">If true the counter will be read only, otherwise false.</param>
-        public LongNumberOfItems(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public CounterDelta32(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(factory.Create(categoryName, counterName, instanceName, readOnly))
         {
         }
@@ -56,12 +53,12 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="machineName">The machine name.</param>
-        public LongNumberOfItems(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public CounterDelta32(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(factory.Create(categoryName, counterName, instanceName, machineName))
         {
         }
 
-        private LongNumberOfItems(IPerformanceCounter counter)
+        private CounterDelta32(IPerformanceCounter counter)
         {
             Counter = counter;
         }
@@ -77,9 +74,9 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The raw value of the counter.
         /// </summary>
-        public long RawValue
+        public int RawValue
         {
-            get { return Counter.RawValue; }
+            get { return (int)Counter.RawValue; }
             set { Counter.RawValue = value; }
         }
 
@@ -87,18 +84,18 @@ namespace JetBlack.Diagnostics
         /// Increment the counter by one.
         /// </summary>
         /// <returns>The new value of the counter.</returns>
-        public long Increment()
+        public int Increment()
         {
-            return Counter.Increment();
+            return (int)Counter.Increment();
         }
 
         /// <summary>
         /// Decrement the counter by one.
         /// </summary>
         /// <returns>The new value of the counter.</returns>
-        public long Decrement()
+        public int Decrement()
         {
-            return Counter.Decrement();
+            return (int)Counter.Decrement();
         }
 
         /// <summary>
@@ -106,9 +103,9 @@ namespace JetBlack.Diagnostics
         /// </summary>
         /// <param name="value">The value to incrment the counter by.</param>
         /// <returns>The new value of the counter.</returns>
-        public long IncrementBy(long value)
+        public int IncrementBy(int value)
         {
-            return Counter.IncrementBy(value);
+            return (int)Counter.IncrementBy(value);
         }
 
         /// <summary>

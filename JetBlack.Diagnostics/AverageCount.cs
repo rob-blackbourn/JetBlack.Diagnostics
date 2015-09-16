@@ -18,7 +18,7 @@ namespace JetBlack.Diagnostics
     /// 
     /// Counters of this type include PhysicalDisk\ Avg. Disk Bytes/Transfer.
     /// </summary>
-    public class LongAverageCount : ICompositeCounter
+    public class AverageCount : ICompositeCounter
     {
         /// <summary>
         /// The suffix of the base counter.
@@ -50,7 +50,7 @@ namespace JetBlack.Diagnostics
         /// </summary>
         /// <param name="counter">The primary counter.</param>
         /// <param name="counterBase">The base counter.</param>
-        private LongAverageCount(IPerformanceCounter counter, IPerformanceCounter counterBase)
+        private AverageCount(IPerformanceCounter counter, IPerformanceCounter counterBase)
         {
             Counter = counter;
             CounterBase = counterBase;
@@ -63,7 +63,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category name.</param>
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="readOnly">If true the counters will be read only, otherwise they will be writeable.</param>
-        public LongAverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public AverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, readOnly),
                 factory.Create(categoryName, counterName + BaseSuffix, readOnly))
@@ -78,7 +78,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="instanceName">The instance name.</param>
         /// <param name="readOnly">If true the counters will be read only, otherwise they will be writeable.</param>
-        public LongAverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public AverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, instanceName, readOnly),
                 factory.Create(categoryName, counterName + BaseSuffix, instanceName, readOnly))
@@ -93,7 +93,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="instanceName">The instance name.</param>
         /// <param name="machineName">The machine name.</param>
-        public LongAverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public AverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(
                 factory.Create(categoryName, counterName, instanceName, machineName),
                 factory.Create(categoryName, counterName + BaseSuffix, instanceName, machineName))

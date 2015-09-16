@@ -13,7 +13,7 @@ namespace JetBlack.Diagnostics.Test
         {
             var performanceCounterFactory = MockPerformanceCounterFactory.Singleton;
 
-            var averageTimer = new IntAverageTimer(performanceCounterFactory, "ExampleCategory", "TimeSleeping", false);
+            var averageTimer = new AverageTimer(performanceCounterFactory, "ExampleCategory", "TimeSleeping", false);
 
             var stopwatch = new Stopwatch();
             var random = new Random();

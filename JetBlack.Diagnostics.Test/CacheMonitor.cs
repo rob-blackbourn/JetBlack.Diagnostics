@@ -10,15 +10,15 @@ namespace JetBlack.Diagnostics.Test
 
         public CacheMonitor(IPerformanceCounterFactory factory, string categoryName, string cacheName, bool readOnly)
         {
-            Count = new IntNumberOfItems(factory, categoryName, cacheName + "Count", readOnly);
-            AverageFetch = new IntAverageTimer(factory, categoryName, cacheName + "AverageFetch", readOnly);
+            Count = new NumberOfItems32(factory, categoryName, cacheName + "Count", readOnly);
+            AverageFetch = new AverageTimer(factory, categoryName, cacheName + "AverageFetch", readOnly);
 
             if (!readOnly)
                 Reset();
         }
 
-        public IntNumberOfItems Count { get; private set; }
-        public IntAverageTimer AverageFetch { get; private set; }
+        public NumberOfItems32 Count { get; private set; }
+        public AverageTimer AverageFetch { get; private set; }
 
         public void Reset()
         {
@@ -28,8 +28,8 @@ namespace JetBlack.Diagnostics.Test
 
         public static CounterCreationData[] CreateCounterData(string cacheName)
         {
-            return IntNumberOfItems.CreateCounterData(cacheName + CountSuffix, "The number of times the cache has been accessed")
-                .Concat(IntAverageTimer.CreateCounterData(cacheName + AverageFetchSuffix, "The average time taken to fetch an item from the cache", "AverageFetch base"))
+            return NumberOfItems32.CreateCounterData(cacheName + CountSuffix, "The number of times the cache has been accessed")
+                .Concat(AverageTimer.CreateCounterData(cacheName + AverageFetchSuffix, "The average time taken to fetch an item from the cache", "AverageFetch base"))
                 .ToArray();
         }
     }

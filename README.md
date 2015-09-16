@@ -26,12 +26,13 @@ performed when the counter is sampled. The system also understands how to combin
 operation. They need to be registered before use; and in the case of composite counters we must ensure the counter and base
 are registered consequtively and in order.
 
-An example of this is the integer average timer. It consists of a numerator of [type](https://msdn.microsoft.com/en-us/library/system.diagnostics.performancecountertype.aspx)
+An example of this is the average timer. It consists of a numerator of [type](https://msdn.microsoft.com/en-us/library/system.diagnostics.performancecountertype.aspx)
 `AverageCouter32` and a denominator of `AverageBase`. The average time is achieved by incrementing the numerator
 by the elapsed ticks, and the denominator by one. When registered we must ensure that the numerator is created before
 the denominator which must immediately succeed it.
 
-The `IntAverageTimer` class provides this functionality. The increment method with the supplied elapsed ticks updates the
+The [`AverageTimer`](https://github.com/rob-blackbourn/JetBlack.Diagnostics/blob/master/JetBlack.Diagnostics/AverageTimer.cs)
+class provides this functionality. The increment method with the supplied elapsed ticks updates the
 numerator by the ticks an the denominator by one. A static method can create the counter data for an installer. As the method
 uses a factory interface to create it's counters, development and testing are not hampered by the need for registration.
 
@@ -48,15 +49,15 @@ public class CacheMonitor
 
     public CacheMonitor(IPerformanceCounterFactory factory, string categoryName, string cacheName, bool readOnly)
     {
-        Count = new IntNumberOfItems(factory, categoryName, cacheName + "Count", readOnly);
-        AverageFetch = new IntAverageTimer(factory, categoryName, cacheName + "AverageFetch", readOnly);
+        Count = new NumberOfItems32(factory, categoryName, cacheName + "Count", readOnly);
+        AverageFetch = new AverageTimer(factory, categoryName, cacheName + "AverageFetch", readOnly);
 
         if (!readOnly)
             Reset();
     }
 
-    public IntNumberOfItems Count { get; private set; }
-    public IntAverageTimer AverageFetch { get; private set; }
+    public NumberOfItems32 Count { get; private set; }
+    public AverageTimer AverageFetch { get; private set; }
 
     public void Reset()
     {
@@ -66,8 +67,8 @@ public class CacheMonitor
 
     public static CounterCreationData[] CreateCounterData(string cacheName)
     {
-        return IntNumberOfItems.CreateCounterData(cacheName + CountSuffix, "The number of times the cache has been accessed")
-            .Concat(IntAverageTimer.CreateCounterData(cacheName + AverageFetchSuffix, "The average time taken to fetch an item from the cache", "AverageFetch base"))
+        return NumberOfItems32.CreateCounterData(cacheName + CountSuffix, "The number of times the cache has been accessed")
+            .Concat(AverageTimer.CreateCounterData(cacheName + AverageFetchSuffix, "The average time taken to fetch an item from the cache", "AverageFetch base"))
             .ToArray();
     }
 }
