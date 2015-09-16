@@ -5,7 +5,7 @@ namespace JetBlack.Diagnostics
     /// <summary>
     /// A class for creating counter data.
     /// </summary>
-    public class CounterCreator : ICounterCreator
+    class CounterCreator : ICounterCreator
     {
         /// <summary>
         /// The constructor.

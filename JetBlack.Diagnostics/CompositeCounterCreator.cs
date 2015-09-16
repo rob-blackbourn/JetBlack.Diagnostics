@@ -5,7 +5,7 @@ namespace JetBlack.Diagnostics
     /// <summary>
     /// Creates the counter data for a composite counter.
     /// </summary>
-    public class CompositeCounterCreator : ICounterCreator
+    class CompositeCounterCreator : ICounterCreator
     {
         /// <summary>
         /// The suffix of the base counter.
