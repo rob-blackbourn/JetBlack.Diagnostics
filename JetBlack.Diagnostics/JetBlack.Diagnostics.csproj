@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CounterTimer.cs" />
     <Compile Include="ElapsedTime.cs" />
     <Compile Include="ICompositeCounter.cs" />
     <Compile Include="ICounter.cs" />
