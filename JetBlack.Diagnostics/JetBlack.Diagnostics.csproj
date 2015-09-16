@@ -49,6 +49,7 @@
     <Compile Include="IntRateOfCountsPerSecond.cs" />
     <Compile Include="IPerformanceCounter.cs" />
     <Compile Include="IPerformanceCounterFactory.cs" />
+    <Compile Include="LongAverageCount.cs" />
     <Compile Include="LongCounterDelta.cs" />
     <Compile Include="LongNumberOfItems.cs" />
     <Compile Include="LongRateOfCountsPerSecond.cs" />

@@ -3,24 +3,22 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// An average counter that measures the time it takes, on average, to
-    /// complete a process or operation. Counters of this type display a ratio 
-    /// of the total elapsed time of the sample interval to the number of
-    /// processes or operations completed during that time. This counter
-    ///  type measures time in ticks of the system clock.
+    /// An average counter that shows how many items are processed, on average,
+    /// during an operation. Counters of this type display a ratio of the items
+    /// processed to the number of operations completed. The ratio is
+    /// calculated by comparing the number of items processed during the last
+    /// interval to the number of operations completed during the last interval.
     /// 
-    /// Formula: ((N 1 -N 0)/F)/(B 1 -B 0), where N 1 and N 0 are performance
-    /// counter readings, B 1 and B 0 are their corresponding AverageBase
-    /// values, and F is the number of ticks per second. The value of F is
-    /// factored into the equation so that the result can be displayed in
-    /// seconds. Thus, the numerator represents the numbers of ticks counted
-    /// during the last sample interval, F represents the frequency of the
-    /// ticks, and the denominator represents the number of operations
-    ///  completed during the last sample interval.
+    /// Formula: (N 1 -N 0)/(B 1 -B 0), where N 1 and N 0 are performance
+    /// counter readings, and the B 1 and B 0 are their corresponding
+    /// AverageBase values. Thus, the numerator represents the numbers of
+    /// items processed during the sample interval, and the denominator
+    /// represents the number of operations completed during the sample
+    /// interval.
     /// 
-    /// Counters of this type include PhysicalDisk\ Avg. Disk sec/Transfer.
+    /// Counters of this type include PhysicalDisk\ Avg. Disk Bytes/Transfer.
     /// </summary>
-    public class IntAverageTimer : ICompositeCounter
+    public class LongAverageCount : ICompositeCounter
     {
         /// <summary>
         /// The suffix of the base counter.
@@ -30,7 +28,7 @@ namespace JetBlack.Diagnostics
         /// <summary>
         /// The counter type.
         /// </summary>
-        public const PerformanceCounterType CounterType = PerformanceCounterType.AverageTimer32;
+        public const PerformanceCounterType CounterType = PerformanceCounterType.AverageCount64;
 
         /// <summary>
         /// The actual performance counter.
@@ -52,7 +50,7 @@ namespace JetBlack.Diagnostics
         /// </summary>
         /// <param name="counter">The primary counter.</param>
         /// <param name="counterBase">The base counter.</param>
-        private IntAverageTimer(IPerformanceCounter counter, IPerformanceCounter counterBase)
+        private LongAverageCount(IPerformanceCounter counter, IPerformanceCounter counterBase)
         {
             Counter = counter;
             CounterBase = counterBase;
@@ -65,7 +63,7 @@ namespace JetBlack.Diagnostics
         /// <param name="categoryName">The category name.</param>
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="readOnly">If true the counters will be read only, otherwise they will be writeable.</param>
-        public IntAverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
+        public LongAverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, readOnly),
                 factory.Create(categoryName, counterName + BaseSuffix, readOnly))
@@ -80,7 +78,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="instanceName">The instance name.</param>
         /// <param name="readOnly">If true the counters will be read only, otherwise they will be writeable.</param>
-        public IntAverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
+        public LongAverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, instanceName, readOnly),
                 factory.Create(categoryName, counterName + BaseSuffix, instanceName, readOnly))
@@ -95,7 +93,7 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The counter name of the primary couter. The base suffice will be used to create the name of the base counter.</param>
         /// <param name="instanceName">The instance name.</param>
         /// <param name="machineName">The machine name.</param>
-        public IntAverageTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public LongAverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(
                 factory.Create(categoryName, counterName, instanceName, machineName),
                 factory.Create(categoryName, counterName + BaseSuffix, instanceName, machineName))
@@ -130,13 +128,14 @@ namespace JetBlack.Diagnostics
         }
 
         /// <summary>
-        /// Increments the primary counter by one and the base counter by the elapsed ticks.
+        /// Increments the counter by the number of items processed and the number of operations completed.
         /// </summary>
-        /// <param name="elapsedTicks">The number of ticks elapsed while performing a single operation.</param>
-        public void Increment(long elapsedTicks)
+        /// <param name="itemsProcessed">The number of items processed.</param>
+        /// <param name="operationsCompleted">The number of operations completed.</param>
+        public void Increment(long itemsProcessed, long operationsCompleted)
         {
-            Counter.IncrementBy(elapsedTicks);
-            CounterBase.Increment();
+            Counter.IncrementBy(itemsProcessed);
+            CounterBase.IncrementBy(operationsCompleted);
         }
 
         /// <summary>
