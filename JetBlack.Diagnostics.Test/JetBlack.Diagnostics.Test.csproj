@@ -50,8 +50,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="IntAverageTimerFixture.cs" />
-    <Compile Include="MockPerformanceCounter.cs" />
-    <Compile Include="MockPerformanceCounterFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CacheMonitor.cs" />
   </ItemGroup>

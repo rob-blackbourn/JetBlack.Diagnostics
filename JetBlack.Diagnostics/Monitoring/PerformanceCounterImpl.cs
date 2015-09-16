@@ -5,7 +5,7 @@ namespace JetBlack.Diagnostics.Monitoring
     /// <summary>
     /// A wrapper class around a true performance counter.
     /// </summary>
-    public class PerformanceCounterImpl : IPerformanceCounter
+    class PerformanceCounterImpl : IPerformanceCounter
     {
         private readonly PerformanceCounter _performanceCounter;
 

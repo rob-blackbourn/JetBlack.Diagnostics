@@ -48,6 +48,8 @@
     <Compile Include="Monitoring\AverageTimer.cs" />
     <Compile Include="Monitoring\CounterDelta32.cs" />
     <Compile Include="Monitoring\ICounterCreator.cs" />
+    <Compile Include="Monitoring\MockPerformanceCounterImpl.cs" />
+    <Compile Include="Monitoring\MockPerformanceCounterFactory.cs" />
     <Compile Include="Monitoring\NumberOfItems32.cs" />
     <Compile Include="Monitoring\RateOfCountsPerSecond32.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />

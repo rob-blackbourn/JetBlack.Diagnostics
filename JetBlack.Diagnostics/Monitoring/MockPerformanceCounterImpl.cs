@@ -1,18 +1,17 @@
 ﻿using System.Threading;
-using JetBlack.Diagnostics.Monitoring;
 
-namespace JetBlack.Diagnostics.Test
+namespace JetBlack.Diagnostics.Monitoring
 {
-    public class MockPerformanceCounter : IPerformanceCounter
+    class MockPerformanceCounterImpl : IPerformanceCounter
     {
         private long _rawValue;
 
-        public MockPerformanceCounter(string categoryName, string counterName, bool readOnly)
+        public MockPerformanceCounterImpl(string categoryName, string counterName, bool readOnly)
             : this(categoryName, counterName, null, readOnly)
         {
         }
 
-        public MockPerformanceCounter(string categoryName, string counterName, string instanceName)
+        public MockPerformanceCounterImpl(string categoryName, string counterName, string instanceName)
         {
             CategoryName = categoryName;
             CounterName = counterName;
@@ -20,7 +19,7 @@ namespace JetBlack.Diagnostics.Test
             ReadOnly = true;
         }
 
-        public MockPerformanceCounter(string categoryName, string counterName, string instanceName, bool readOnly)
+        public MockPerformanceCounterImpl(string categoryName, string counterName, string instanceName, bool readOnly)
         {
             CategoryName = categoryName;
             CounterName = counterName;
@@ -28,7 +27,7 @@ namespace JetBlack.Diagnostics.Test
             ReadOnly = readOnly;
         }
 
-        public MockPerformanceCounter(string categoryName, string counterName, string instanceName, string machineName)
+        public MockPerformanceCounterImpl(string categoryName, string counterName, string instanceName, string machineName)
         {
             CategoryName = categoryName;
             CounterName = counterName;

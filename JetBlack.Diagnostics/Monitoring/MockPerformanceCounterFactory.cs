@@ -1,6 +1,4 @@
-﻿using JetBlack.Diagnostics.Monitoring;
-
-namespace JetBlack.Diagnostics.Test
+﻿namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
     /// Creates a performance counter factory suitable for development and testing.
@@ -23,7 +21,7 @@ namespace JetBlack.Diagnostics.Test
         /// <returns>A mock performance counter.</returns>
         public IPerformanceCounter Create(string categoryName, string counterName, bool readOnly)
         {
-            return new MockPerformanceCounter(categoryName, counterName, readOnly);
+            return new MockPerformanceCounterImpl(categoryName, counterName, readOnly);
         }
 
         /// <summary>
@@ -36,7 +34,7 @@ namespace JetBlack.Diagnostics.Test
         /// <returns>A mock performance counter.</returns>
         public IPerformanceCounter Create(string categoryName, string counterName, string instanceName, bool readOnly)
         {
-            return new MockPerformanceCounter(categoryName, counterName, instanceName, readOnly);
+            return new MockPerformanceCounterImpl(categoryName, counterName, instanceName, readOnly);
         }
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace JetBlack.Diagnostics.Test
         /// <returns></returns>
         public IPerformanceCounter Create(string categoryName, string counterName, string instanceName, string machineName)
         {
-            return new MockPerformanceCounter(categoryName, counterName, instanceName, machineName);
+            return new MockPerformanceCounterImpl(categoryName, counterName, instanceName, machineName);
         }
     }
 }
