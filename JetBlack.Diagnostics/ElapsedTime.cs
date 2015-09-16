@@ -4,10 +4,15 @@ using System.Diagnostics;
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A higher level implementation of an elepsed time performance counter.
+    /// A difference timer that shows the total time between when the component
+    /// or process started and the time when this value is calculated.
     /// 
-    /// The counter is reset with the current time, and subsequenct calls
-    /// to the increment method use a stop watch which was started on reset.
+    /// Formula: (D0 - N0) / F, where D0 represents the current time, N0
+    /// represents the time the object was started, and F represents the number
+    /// of time units that elapse in one second. The value of F is factored
+    /// into the equation so that the result can be displayed in seconds.
+    /// 
+    /// Counters of this type include System\ System Up Time.
     /// </summary>
     public class ElapsedTime : ICounter
     {

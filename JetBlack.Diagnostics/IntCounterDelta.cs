@@ -3,7 +3,10 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A change in items counter.
+    /// A difference counter that shows the change in the measured attribute
+    /// between the two most recent sample intervals.
+    /// 
+    /// Formula: N1 -N0, where N1 and N0 are performance counter readings.
     /// </summary>
     public class IntCounterDelta : ICounter
     {

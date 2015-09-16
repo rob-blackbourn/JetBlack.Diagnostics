@@ -9,8 +9,8 @@ namespace JetBlack.Diagnostics
     /// processes or operations completed during that time. This counter
     ///  type measures time in ticks of the system clock.
     /// 
-    /// Formula: ((N 1 -N 0)/F)/(B 1 -B 0), where N 1 and N 0 are performance
-    /// counter readings, B 1 and B 0 are their corresponding AverageBase
+    /// Formula: ((N1 -N0) / F) / (B1 -B0), where N1 and N0 are performance
+    /// counter readings, B1 and B0 are their corresponding AverageBase
     /// values, and F is the number of ticks per second. The value of F is
     /// factored into the equation so that the result can be displayed in
     /// seconds. Thus, the numerator represents the numbers of ticks counted

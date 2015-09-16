@@ -3,7 +3,13 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A simple count of the number of items.
+    /// An instantaneous counter that shows the most recently observed value.
+    /// Used, for example, to maintain a simple count of items or operations.
+    /// 
+    /// Formula: None. Does not display an average, but shows the raw data as
+    /// it is collected.
+    /// 
+    /// Counters of this type include Memory\Available Bytes.
     /// </summary>
     public class IntNumberOfItems : ICounter
     {

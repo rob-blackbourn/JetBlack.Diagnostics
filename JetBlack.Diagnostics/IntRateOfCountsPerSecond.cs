@@ -2,6 +2,22 @@
 
 namespace JetBlack.Diagnostics
 {
+    /// <summary>
+    /// A difference counter that shows the average number of operations
+    /// completed during each second of the sample interval. Counters of this
+    /// type measure time in ticks of the system clock.
+    /// 
+    /// Formula: (N1 - N0) / ((D1 -D0) / F), where N1 and N0 are performance
+    /// counter readings, D1 and D0 are their corresponding time readings, and
+    /// F represents the number of ticks per second. Thus, the numerator
+    /// represents the number of operations performed during the last sample
+    /// interval, the denominator represents the number of ticks elapsed during
+    /// the last sample interval, and F is the frequency of the ticks. The
+    /// value of F is factored into the equation so that the result can be
+    /// displayed in seconds.
+    /// 
+    /// Counters of this type include System\ File Read Operations/sec.
+    /// </summary>
     public class IntRateOfCountsPerSecond : ICounter
     {
         /// <summary>

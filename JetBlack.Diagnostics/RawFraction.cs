@@ -3,7 +3,16 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A raw fraction. This requires the denominator to be set.
+    /// An instantaneous percentage counter that shows the ratio of a subset to
+    /// its set as a percentage. For example, it compares the number of bytes
+    /// in use on a disk to the total number of bytes on the disk. Counters of
+    /// this type display the current percentage only, not an average over time.
+    /// 
+    /// Formula: (N0 / D0) x 100, where D0 represents a measured attribute (using
+    /// a base counter of type RawBase) and N 0 represents one component of that
+    /// attribute.
+    /// 
+    /// Counters of this type include Paging File\% Usage Peak.
     /// </summary>
     public class RawFraction : ICompositeCounter
     {

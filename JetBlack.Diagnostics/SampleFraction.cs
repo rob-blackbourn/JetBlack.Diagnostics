@@ -3,7 +3,16 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A sample fraction counter.
+    /// A percentage counter that shows the average ratio of hits to all
+    /// operations during the last two sample intervals.
+    /// 
+    /// Formula: ((N1 - N0) / (D1 - D0)) x 100, where the numerator represents
+    /// the number of successful operations during the last sample interval,
+    /// and the denominator represents the change in the number of all
+    /// operations (of the type measured) completed during the sample interval,
+    /// using counters of type SampleBase.
+    /// 
+    /// Counters of this type include Cache\Pin Read Hits %.
     /// </summary>
     public class SampleFraction : ICompositeCounter
     {

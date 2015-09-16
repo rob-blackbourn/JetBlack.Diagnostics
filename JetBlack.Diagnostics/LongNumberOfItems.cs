@@ -3,7 +3,13 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A simple long count of the number of items.
+    /// An instantaneous counter that shows the most recently observed value.
+    /// Used, for example, to maintain a simple count of a very large number
+    /// of items or operations. It is the same as NumberOfItems32 except that
+    /// it uses larger fields to accommodate larger values.
+    /// 
+    /// Formula: None. Does not display an average, but shows the raw data as
+    /// it is collected.
     /// </summary>
     public class LongNumberOfItems : ICounter
     {

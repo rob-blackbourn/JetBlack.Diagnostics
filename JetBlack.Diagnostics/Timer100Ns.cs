@@ -3,7 +3,17 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A timer with 100Ns precision.
+    /// A percentage counter that shows the active time of a component as a
+    /// percentage of the total elapsed time of the sample interval. It
+    /// measures time in units of 100 nanoseconds (ns). Counters of this
+    /// type are designed to measure the activity of one component at a time.
+    /// 
+    /// Formula: (N1 - N0) / (D1 - D0) x 100, where the numerator represents
+    /// the portions of the sample interval during which the monitored
+    /// components were active, and the denominator represents the total
+    /// elapsed time of the sample interval.
+    /// 
+    /// Counters of this type include Processor\ % User Time.
     /// </summary>
     public class Timer100Ns : ICounter
     {

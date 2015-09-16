@@ -3,7 +3,17 @@
 namespace JetBlack.Diagnostics
 {
     /// <summary>
-    /// A sample counter.
+    /// An average counter that shows the average number of operations completed
+    /// in one second. When a counter of this type samples the data, each
+    /// sampling interrupt returns one or zero. The counter data is the number
+    /// of ones that were sampled. It measures time in units of ticks of the
+    /// system performance timer.
+    /// 
+    /// Formula: (N1 – N0) / ((D1 – D0) / F), where the numerator (N) represents
+    /// the number of operations completed, the denominator (D) represents elapsed
+    /// time in units of ticks of the system performance timer, and F represents
+    /// the number of ticks that elapse in one second. F is factored into the
+    /// equation so that the result can be displayed in seconds.
     /// </summary>
     public class SampleCounter : ICounter
     {
