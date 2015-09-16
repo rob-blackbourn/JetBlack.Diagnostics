@@ -58,6 +58,7 @@
     <Compile Include="RawFraction.cs" />
     <Compile Include="SampleCounter.cs" />
     <Compile Include="SampleFraction.cs" />
+    <Compile Include="Timer100Ns.cs" />
     <Compile Include="TraceSourceExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
