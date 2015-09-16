@@ -50,12 +50,12 @@ namespace JetBlack.Diagnostics
         /// <param name="counterName">The name of the counter.</param>
         /// <param name="instanceName">The name of the instance.</param>
         /// <param name="machineName">The machine name.</param>
-        public LongNumberOfItems(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
+        public CounterTimer(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(factory.Create(categoryName, counterName, instanceName, machineName))
         {
         }
 
-        private LongNumberOfItems(IPerformanceCounter counter)
+        private CounterTimer(IPerformanceCounter counter)
         {
             Counter = counter;
         }
