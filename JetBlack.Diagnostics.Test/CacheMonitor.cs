@@ -28,8 +28,8 @@ namespace JetBlack.Diagnostics.Test
 
         public static CounterCreationData[] CreateCounterData(string cacheName)
         {
-            return NumberOfItems32.CreateCounterData(cacheName + CountSuffix, "The number of times the cache has been accessed")
-                .Concat(AverageTimer.CreateCounterData(cacheName + AverageFetchSuffix, "The average time taken to fetch an item from the cache", "AverageFetch base"))
+            return NumberOfItems32.CounterCreator.CreateCounterData(cacheName + CountSuffix, "The number of times the cache has been accessed")
+                .Concat(AverageTimer.CounterCreator.CreateCounterData(cacheName + AverageFetchSuffix, "The average time taken to fetch an item from the cache"))
                 .ToArray();
         }
     }

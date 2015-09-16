@@ -20,10 +20,12 @@ namespace JetBlack.Diagnostics
     /// </summary>
     public class AverageCount : ICompositeCounter
     {
+        private static ICounterCreator _counterCreator;
+
         /// <summary>
-        /// The suffix of the base counter.
+        /// The counter creator.
         /// </summary>
-        public const string BaseSuffix = "Base";
+        public static ICounterCreator CounterCreator { get { return _counterCreator ?? (_counterCreator = new CompositeCounterCreator(CounterType, BaseCounterType)); } }
 
         /// <summary>
         /// The counter type.
@@ -66,7 +68,7 @@ namespace JetBlack.Diagnostics
         public AverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, readOnly),
-                factory.Create(categoryName, counterName + BaseSuffix, readOnly))
+                factory.Create(categoryName, counterName + CompositeCounterCreator.BaseSuffix, readOnly))
         {
         }
 
@@ -81,7 +83,7 @@ namespace JetBlack.Diagnostics
         public AverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, bool readOnly)
             : this(
                 factory.Create(categoryName, counterName, instanceName, readOnly),
-                factory.Create(categoryName, counterName + BaseSuffix, instanceName, readOnly))
+                factory.Create(categoryName, counterName + CompositeCounterCreator.BaseSuffix, instanceName, readOnly))
         {
         }
 
@@ -96,7 +98,7 @@ namespace JetBlack.Diagnostics
         public AverageCount(IPerformanceCounterFactory factory, string categoryName, string counterName, string instanceName, string machineName)
             : this(
                 factory.Create(categoryName, counterName, instanceName, machineName),
-                factory.Create(categoryName, counterName + BaseSuffix, instanceName, machineName))
+                factory.Create(categoryName, counterName + CompositeCounterCreator.BaseSuffix, instanceName, machineName))
         {
         }
 
@@ -145,22 +147,6 @@ namespace JetBlack.Diagnostics
         public float NextValue()
         {
             return Counter.NextValue();
-        }
-
-        /// <summary>
-        /// Returns a data structure suitable for installing a counter.
-        /// </summary>
-        /// <param name="counterName">The name of the counter.</param>
-        /// <param name="counterHelp">The help for the primary counter.</param>
-        /// <param name="counterBaseHelp">The help for the base counter.</param>
-        /// <returns>An array of CounterCreationData that can be used to install the counter.</returns>
-        public static CounterCreationData[] CreateCounterData(string counterName, string counterHelp, string counterBaseHelp)
-        {
-            return new[]
-            {
-                new CounterCreationData(counterName, counterHelp, CounterType),
-                new CounterCreationData(counterName + BaseSuffix, counterBaseHelp, BaseCounterType)
-            };
         }
 
         /// <summary>

@@ -13,6 +13,13 @@ namespace JetBlack.Diagnostics
     /// </summary>
     public class NumberOfItems64 : ICounter
     {
+        private static ICounterCreator _counterCreator;
+
+        /// <summary>
+        /// The counter creator.
+        /// </summary>
+        public static ICounterCreator CounterCreator { get { return _counterCreator ?? (_counterCreator = new CounterCreator(CounterType)); } }
+
         /// <summary>
         /// The counter type.
         /// </summary>
@@ -118,20 +125,6 @@ namespace JetBlack.Diagnostics
         public float NextValue()
         {
             return Counter.NextValue();
-        }
-
-        /// <summary>
-        /// Returns the information required for a performance counter installer.
-        /// </summary>
-        /// <param name="counterName">The name of the counter.</param>
-        /// <param name="counterHelp">Helpful information about the counter.</param>
-        /// <returns>An array of data which can be used to install the counter.</returns>
-        public static CounterCreationData[] CreateCounterData(string counterName, string counterHelp)
-        {
-            return new[]
-            {
-                new CounterCreationData(counterName, counterHelp, CounterType)
-            };
         }
 
         /// <summary>

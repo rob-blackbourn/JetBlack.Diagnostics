@@ -39,12 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompositeCounterCreator.cs" />
+    <Compile Include="CounterCreator.cs" />
     <Compile Include="CounterTimer.cs" />
     <Compile Include="ElapsedTime.cs" />
     <Compile Include="ICompositeCounter.cs" />
     <Compile Include="ICounter.cs" />
     <Compile Include="AverageTimer.cs" />
     <Compile Include="CounterDelta32.cs" />
+    <Compile Include="ICounterCreator.cs" />
     <Compile Include="NumberOfItems32.cs" />
     <Compile Include="RateOfCountsPerSecond32.cs" />
     <Compile Include="IPerformanceCounter.cs" />
