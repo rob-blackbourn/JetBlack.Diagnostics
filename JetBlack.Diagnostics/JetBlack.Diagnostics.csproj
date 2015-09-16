@@ -43,10 +43,12 @@
     <Compile Include="ICompositeCounter.cs" />
     <Compile Include="ICounter.cs" />
     <Compile Include="IntAverageTimer.cs" />
+    <Compile Include="IntCounterDelta.cs" />
     <Compile Include="IntNumberOfItems.cs" />
     <Compile Include="IntRateOfCountsPerSecond.cs" />
     <Compile Include="IPerformanceCounter.cs" />
     <Compile Include="IPerformanceCounterFactory.cs" />
+    <Compile Include="LongCounterDelta.cs" />
     <Compile Include="LongNumberOfItems.cs" />
     <Compile Include="LongRateOfCountsPerSecond.cs" />
     <Compile Include="PerformanceCounterFactory.cs" />
