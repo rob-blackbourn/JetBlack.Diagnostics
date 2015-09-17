@@ -22,12 +22,12 @@ namespace JetBlack.Diagnostics.Monitoring
     /// </summary>
     public class AverageTimer : ICompositeCounter
     {
-        private static ICounterCreator _counterCreator;
+        private static ICompositeCounterCreator _counterCreator;
 
         /// <summary>
         /// The counter creator.
         /// </summary>
-        public static ICounterCreator CounterCreator { get { return _counterCreator ?? (_counterCreator = new CompositeCounterCreator(CounterType, BaseCounterType)); } }
+        public static ICompositeCounterCreator CounterCreator { get { return _counterCreator ?? (_counterCreator = new CompositeCounterCreator(CounterType, BaseCounterType)); } }
 
         /// <summary>
         /// The counter type.

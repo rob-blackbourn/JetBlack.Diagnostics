@@ -44,6 +44,7 @@
     <Compile Include="Monitoring\CounterTimer.cs" />
     <Compile Include="Monitoring\ElapsedTime.cs" />
     <Compile Include="Monitoring\ICompositeCounter.cs" />
+    <Compile Include="Monitoring\ICompositeCounterCreator.cs" />
     <Compile Include="Monitoring\ICounter.cs" />
     <Compile Include="Monitoring\AverageTimer.cs" />
     <Compile Include="Monitoring\CounterDelta32.cs" />

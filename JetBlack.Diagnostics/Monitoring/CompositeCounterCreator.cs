@@ -5,7 +5,7 @@ namespace JetBlack.Diagnostics.Monitoring
     /// <summary>
     /// Creates the counter data for a composite counter.
     /// </summary>
-    class CompositeCounterCreator : ICounterCreator
+    class CompositeCounterCreator : ICompositeCounterCreator
     {
         /// <summary>
         /// The suffix of the base counter.
@@ -41,10 +41,23 @@ namespace JetBlack.Diagnostics.Monitoring
         /// <returns>An array of data which can be used to install the counter.</returns>
         public CounterCreationData[] CreateCounterData(string counterName, string counterHelp)
         {
+            return CreateCounterData(counterName, counterHelp, counterName + BaseSuffix, string.Concat(BaseSuffix, ": ", counterHelp));
+        }
+
+        /// <summary>
+        /// Creates the counter data for a composite counter.
+        /// </summary>
+        /// <param name="counterName">The counter name.</param>
+        /// <param name="counterHelp">The help for the counter.</param>
+        /// <param name="baseCounterName">The base counter name.</param>
+        /// <param name="baseCounterHelp">The base counter help.</param>
+        /// <returns>An array of data which can be used to install the counter.</returns>
+        public CounterCreationData[] CreateCounterData(string counterName, string counterHelp, string baseCounterName, string baseCounterHelp)
+        {
             return new[]
                 {
                     new CounterCreationData(counterName, counterHelp, CounterType),
-                    new CounterCreationData(counterName + "Base", "Base: " + counterHelp, BaseCounterType)
+                    new CounterCreationData(baseCounterName, baseCounterHelp, BaseCounterType)
                 };
         }
     }
