@@ -1,11 +1,10 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace JetBlack.Diagnostics.Monitoring
 {
     /// <summary>
-    /// A difference timer that shows the total time between when the component
-    /// or process started and the time when this value is calculated.
+    /// A difference timer that shows the total time in seconds between when the
+    /// component  or process started and the time when this value is calculated.
     /// 
     /// Formula: (D0 - N0) / F, where D0 represents the current time, N0
     /// represents the time the object was started, and F represents the number
@@ -22,8 +21,6 @@ namespace JetBlack.Diagnostics.Monitoring
         /// The counter creator.
         /// </summary>
         public static ICounterCreator CounterCreator { get { return _counterCreator ?? (_counterCreator = new CounterCreator(CounterType)); } }
-
-        private readonly Stopwatch _stopWatch = new Stopwatch();
 
         /// <summary>
         /// The performance counter type.
@@ -83,34 +80,13 @@ namespace JetBlack.Diagnostics.Monitoring
         /// </summary>
         public void Reset()
         {
-            RawValue = DateTime.Now.Ticks;
-            _stopWatch.Start();
-        }
-
-        /// <summary>
-        /// Gets the ticks elapsed.
-        /// </summary>
-        public long RawValue
-        {
-            get { return Counter.RawValue; }
-            set { Counter.RawValue = value; }
-        }
-
-        /// <summary>
-        /// Increments the counter with the number of ticks since the last increment or reset.
-        /// </summary>
-        /// <returns></returns>
-        public long Increment()
-        {
-            var ticks = _stopWatch.ElapsedTicks;
-            Counter.RawValue = ticks;
-            return ticks;
+            Counter.RawValue = Stopwatch.GetTimestamp();
         }
 
         /// <summary>
         /// Samples a read only performance counter.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The calculated value.</returns>
         public float NextValue()
         {
             return Counter.NextValue();
